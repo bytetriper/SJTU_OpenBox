@@ -22,7 +22,7 @@ def getInfo(targetKey):
     time.sleep(1.5)
     #Finance=browser.find_elements_by_xpath("//*[@id='app']/div/div[1]/div[1]/div/div[2]/div/div[1]/div[4]/div[1]/p[1]")
     #Finance.click()
-    print("List Got")
+    #print("List Got")
     browser.implicitly_wait(5)
     target=browser.find_element(by=By.XPATH,value=r"//*[@id='V0_CTRL4']/option[3]")
     target.click()
@@ -34,10 +34,18 @@ def getInfo(targetKey):
     time.sleep(1)
     try:
         Name=browser.find_element(by=By.XPATH,value=r'//*[@id="V0_CTRL15_0"]/*')
+        if Name.get_attribute('text')=='':
+            print("No such user in SJTU")
+            browser.close()
+            return
+        print("[SJTU search]:SJTU searching...")
         print("姓名:",' ')
         print(Name.get_attribute('text'))
+
     except:
         print("No Such User or Unknown Error")
+        browser.close()
+        return
     '''
     table=browser.find_elements(by=By.ID,value=r'//*[@class="suggest_unselected infoplus_suggester_item"]')
     for i in table:
@@ -60,5 +68,8 @@ def getInfo(targetKey):
     #time.sleep(10)
     browser.close()
 if __name__=='__main__':
-    targetKey=input("学号\工号\姓名\姓名拼音\Jaccount:")
-    getInfo(targetKey)
+    while(1):
+        targetKey=input("学号\工号\姓名\姓名拼音\Jaccount:")
+        if targetKey=='' or targetKey=='exit':
+                break
+        getInfo(targetKey)
